@@ -48,5 +48,40 @@ self.addEventListener("activate", event => {
 
 // add fetch code for cache
 
+self.addEventListener("fetch", function (event) {
+    if (event.request.url.includes("/api/")) {
+        event.respondWith(caches
+            .open(RUNTIME)
+            .then((cache) => {
+                return fetch(event.request)
+                .then((response) => {
+                    if (response.status === 200) {
+                        cache.put(event.request.url, response.clone());
+                    }
+                    return response;
+                })
+                .catch((err) => {
+                    return cache.match(event.request);
+                });
+
+            })
+            .catch((err) => console.log(err))
+            
+            
+            
+            );
+            return;
+    }
+    event.respondWith(
+        caches.open(STATIC_CACHE).then((cache) => {
+            return cache.match(event.request).then((response) => {
+                return response || fetch(event.request);
+            });
+        })
+    );
+});
+
+
+console.log("This is your Service Worker saying 'What is up?' ");
 
 
