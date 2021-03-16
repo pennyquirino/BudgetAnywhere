@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/warm-beach-15964", {
+mongoose.connect("mongodb://localhost/BudgetAnywhere", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
